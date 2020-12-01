@@ -1,0 +1,11 @@
+损失函数与激活函数的匹配
+使用不同的损失函数与激活函数相对应
+sigmoid + BCE  <=> BCEwitlogi...
+softmax+one_hot21:26 2020/12/1+nllloss <=>crossEntropyLoss
+sotmax+one_hot(out), one_hot(target) -> MSE
+
+# net = torch.load(save_net).to(device)#加载参数和网络
+# loss_fn = torch.nn.CrossEntropyLoss()#多分类交叉熵,自动对输入数据做onehot和softmax
+# loss_fn = torch.nn.MSELoss()#均方差
+# loss_fn = torch.nn.BCELoss()#二分类交叉熵
+
