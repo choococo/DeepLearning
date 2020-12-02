@@ -70,6 +70,9 @@ if __name__ == '__main__':
     if os.path.exists(f"params5/{index}.t"):
         net.load_state_dict(torch.load(f"params5/{index}.t"))
 
+
+        
+
     loss_func = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=1e-3)
 
