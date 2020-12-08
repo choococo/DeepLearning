@@ -37,8 +37,8 @@ class CatDogDataset(Dataset):
 
 if __name__ == '__main__':
     datatset = CatDogDataset(r"F:\2.Dataset\cat_dog", 0)
-    data_loader = DataLoader(datatset, batch_size=100, shuffle=True)
+    data_loader = DataLoader(datatset, batch_size=100, shuffle=False)
     for img, label in  data_loader:
-        print(img.shape)
+        print(img)
         print(label)
         exit(0)
