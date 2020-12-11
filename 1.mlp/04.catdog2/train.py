@@ -5,6 +5,7 @@ from data_set import CatDogDataset
 from torch.utils.data import DataLoader
 from net import CatDogNet
 import os
+import matplotlib.pyplot as plt
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

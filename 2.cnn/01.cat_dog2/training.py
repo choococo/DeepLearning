@@ -7,7 +7,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 class Train:
@@ -18,7 +18,7 @@ class Train:
     def __call__(self):
         pass
 
-    def _read_summary_writer_len(self): # 读取收集精度/损失的数据，用于继续追加
+    def _read_summary_writer_len(self):  # 读取收集精度/损失的数据，用于继续追加
         with open(self._summary_writer, "r") as f:
             length = len(f.readlines())
         return length
@@ -61,7 +61,6 @@ if __name__ == '__main__':
             acc_list.append(accuracy)
         last_acc = np.mean(acc_list)
         print("last accuracy is : ", last_acc)
-
 
     train_count_list = []
     train_loss_list = []
