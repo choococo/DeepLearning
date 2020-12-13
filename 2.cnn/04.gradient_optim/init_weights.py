@@ -11,9 +11,9 @@ import torch.nn as nn
 seed = torch.manual_seed(0)
 
 x = torch.randn(100, 400)
-print(x.mean(), x.var())  # 计算当前的均值和方差
+# print(x.mean(), x.var())  # 计算当前的均值和方差
 
-w1 = nn.init.normal_(x, 0.0, 0.0002)
+w1 = nn.init.normal_(x, 1.0, 0.0002)
 print(w1.mean(), w1.var())
 
 w2 = nn.init.uniform_(x, -0.2, 0.2)

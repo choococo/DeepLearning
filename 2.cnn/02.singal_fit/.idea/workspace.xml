@@ -2,23 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="74f080fd-8cd9-41c3-8d3c-7f5449154425" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../01.cat_dog2/0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../01.cat_dog2/data_set.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../01.cat_dog2/final_train.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../01.cat_dog2/net2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../01.cat_dog2/params/16.t" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/02.singal_fit.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Waveform_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Waveform_fitting.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../04.gradient_optim/GroupNorm_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../04.gradient_optim/InstanceNorm_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../04.gradient_optim/LayerNorm_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../04.gradient_optim/SwtichableNorm_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../04.gradient_optim/test01.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../04.gradient_optim/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../04.gradient_optim/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../04.gradient_optim/BatchNorm_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/../04.gradient_optim/BatchNorm_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../04.gradient_optim/init_weights.py" beforeDir="false" afterPath="$PROJECT_DIR$/../04.gradient_optim/init_weights.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -33,10 +45,33 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.jit">
+    <configuration name="jit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="02.singal_fit" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="02.singal_fit" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -60,6 +95,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.jit" />
         <item itemvalue="Python.train" />
       </list>
     </recent_temporary>
@@ -85,6 +121,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
