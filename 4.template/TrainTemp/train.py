@@ -7,7 +7,6 @@ from logger.loggers import classLogger, funcLogger
 from TrainTemp.net import NetTempV1
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 from TrainTemp.utils import draw_acc_loss_figure
 from torchsummary import summary
 
@@ -158,7 +157,6 @@ class Train(object):
         :return: 输出模型信息
         """
         summary(model=self._net, input_size=input_size)
-
 
 # if __name__ == '__main__':
 #     BATCH_SIZE = 100
