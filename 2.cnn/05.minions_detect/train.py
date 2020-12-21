@@ -23,13 +23,13 @@ def _loss_func_total(self, output, target, alpha=1):
 
 
 if __name__ == '__main__':
-    BATCH_SIZE = 30
+    BATCH_SIZE = 15
     EPOCH = 50
     # 需要训练的轮次
     root = r"F:\2.Dataset\Yellow\Minions"
     index = 0  # 权重索引，第一次训练为零
 
-    # summaryWriter = SummaryWriter("./logs")
+    summaryWriter = SummaryWriter("./logs2")
 
     train_dataset = MyDataset(root, flag=0)
     val_dataset = MyDataset(root, flag=1)
@@ -48,6 +48,9 @@ if __name__ == '__main__':
     save_params = f"params/{index}.t"
     if not os.path.exists("params"):
         os.mkdir("params")
+    if os.path.exists(f"params/{index}.t"):
+        net.load_state_dict(torch.load(f"params/{index}.t"))
+        print("params loaded success...")
 
     train_loss_list = []  # loss
     train_acc_list = []
@@ -93,11 +96,12 @@ if __name__ == '__main__':
             train_r2_list_inter.append(r2)
             train_acc_list_inter.append(accuracy)
             train_loss_list_inter.append(loss.item())
+            # summaryWriter.add_histogram("output", y, epoch)
         # train_r2_avg = np.mean(train_r2_list_inter)
         # print("====>", train_r2_avg)
 
-        # train_acc_list.append(np.mean(train_acc_list_inter))
-        # train_loss_list.append(np.mean(train_loss_list_inter))
+        train_acc_list.append(np.mean(train_acc_list_inter))
+        train_loss_list.append(np.mean(train_loss_list_inter))
         train_r2_list.append(np.mean(train_r2_list_inter))
         print(
             f"{epoch + index + 1} | train_acc：{np.mean(train_acc_list_inter)} | train_loss: {np.mean(train_loss_list_inter)} | r2_score: {np.mean(train_r2_list_inter)}")
@@ -117,11 +121,6 @@ if __name__ == '__main__':
             loss1 = loss_func1(conf_out, conf_label)
             loss2 = loss_func2(box_out, box_label)
             loss = loss1 + loss2
-            # print(loss1.item(),loss2.item())
-            optimizer.zero_grad()
-
-            loss.backward()
-            optimizer.step()
 
             box_out = box_out.cpu().detach().numpy()
             box_label = box_label.cpu().detach().numpy()
@@ -135,17 +134,28 @@ if __name__ == '__main__':
             val_acc_list_inter.append(val_accuracy)
 
         val_r2_s = np.mean(val_r2_list_inter)
-        print("====>", val_r2_s)
 
-        # val_acc_list.append(np.mean(val_acc_list_inter))
-        # val_loss_list.append(np.mean(val_loss_list_inter))
+        val_acc_list.append(np.mean(val_acc_list_inter))
+        val_loss_list.append(np.mean(val_loss_list_inter))
         val_r2_list.append(np.mean(val_r2_list_inter))
         print(
             f"{epoch + index + 1} | val_acc  ：{np.mean(val_acc_list_inter)} | val_loss  : {np.mean(val_loss_list_inter)} | r2_score : {np.mean(val_r2_list_inter)}")
+        train_avg_loss = train_loss_list[epoch]
+        val_avg_loss = val_loss_list[epoch]
+        train_avg_score = train_acc_list[epoch]
+        val_avg_score = val_acc_list[epoch]
+        train_r2_score = train_r2_list[epoch]
+        val_r2_score = val_r2_list[epoch]
+
+        summaryWriter.add_scalars("loss", {"train_loss": train_avg_loss, "val_loss": val_avg_loss}, epoch)
+        summaryWriter.add_scalars("acc", {"train_score": train_avg_score, "val_score": val_avg_score}, epoch)
+        summaryWriter.add_scalars("R2", {"train_r2_score": train_r2_score, "val_r2_score": val_r2_score},epoch)
 
         if val_r2_s > r2_max:
             r2_max = val_r2_s
             torch.save(net.state_dict(), f"params/{epoch + index + 1}.t")
+            print("params save success.")
+        print("====>", val_r2_s)
 
         # 加入过拟合自动判断，让程序过拟合自动停止
         r2_length = len(val_r2_list)
@@ -156,3 +166,5 @@ if __name__ == '__main__':
                 print(max(val_r2_list))
                 exit()
             count += average_num
+
+    summaryWriter.close()
