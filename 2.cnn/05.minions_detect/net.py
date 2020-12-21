@@ -57,7 +57,7 @@
 #     print(y.shape)
 #     summary(net.cuda(), (3, 224, 224))
 
-# """
+# """ 这个网络是有问题的，作为一个反例
 # ================================================================
 # Total params: 241,925
 # Trainable params: 241,925
@@ -147,10 +147,10 @@ class Net(nn.Module):
 
         output1 = output[:, :4] # [N, 4]
 
-        output2 = torch.sigmoid(output[:, 4])  # [N, 1]
+        output2 = torch.sigmoid(output[:, 4])  # 因为后面使用的是BCELoss因此一定要使用sigmoid
         # output2 = output[:, 4:]  # [N, 1]
 
-        return output2, output1
+        return output2, output1 # [N, 1] # [N, 4]
 
 
 if __name__ == '__main__':

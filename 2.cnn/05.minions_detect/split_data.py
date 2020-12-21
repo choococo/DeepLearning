@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw
 数据的类型，所有做好标签的数据都在一个文件夹中，部分代码可以适用于一遍生成样本，一遍分类
 步骤：
     首先要生成三个文件夹：train、val、test
+    标签文件：train_label.txt val_label.txt test_label.txt
 """
 
 
@@ -115,57 +116,11 @@ def add_positive_negative():
                 f.write(f"{count}.png {1} {paste_x} {paste_y} {paste_x2} {paste_y2}\n")
                 f.flush()
                 count += 1
+                # 加入进度条
                 sys.stdout.write("\r >> processing {}/{}".format((count), length))
                 sys.stdout.flush()
             sys.stdout.write("\n")
             sys.stdout.flush()
-    # bg_path = r"F:\2.Dataset\Yellow\bg\bg_split\train"
-    # # bg_split = fr"F:\2.Dataset\Yellow\bg\bg_split\{choices[0]}"
-    # save_path = fr"F:\2.Dataset\Yellow\Minions2\{choices[0]}"
-    # with open(r"F:\2.Dataset\Yellow\Minions/train_label.txt", "w") as f:
-    #     count = 0
-    #     for bg_name in os.listdir(bg_path):
-    #         # 1. 小黄人
-    #         num = random.randint(1, 20)
-    #         print(num)
-    #         image = Image.open(f"{minions_path}/{num}.png")
-    #
-    #         # new_w, new_h = random.randint(100, 128), random.randint(100, 128)
-    #         # image_resize = image.resize((new_w, new_h))
-    #         new_len = random.randint(100, 130)
-    #         image_resize = image.resize((new_len, new_len))
-    #         print(image_resize.size)
-    #         image_roate = image_resize.rotate(random.randint(-45, 45))  # 旋转
-    #         print(image_roate.size)
-    #         image_roate.show()
-    #         exit()
-    #         # 2.背景图，先进行224的缩放,然后贴小黄人，这样坐标就统一了
-    #         img_bg = Image.open(f"{bg_path}/{bg_name}")
-    #         img_bg = img_bg.convert("RGBA")
-    #         img_bg = img_bg.resize((224, 224))
-    #         img_bg.save(f"{save_path}/{count}_bg.png")  # 将图片进行保存
-    #         f.write(f"{count}.png {0} {0} {0} {0} {0}\n")
-    #         f.flush()
-    #
-    #         # r, g, b, a = image_roate.split() # 路径拆分
-    #         # 3. 生成随机粘贴坐标
-    #         # paste_x, paste_y = random.randint(0, 224 - new_w), random.randint(0, 224 - new_h)
-    #         paste_x, paste_y = random.randint(0, 224 - new_len), random.randint(0, 224 - new_len)
-    #         print(paste_x, paste_y)
-    #
-    #         img_bg.paste(image_roate, (paste_x, paste_y), mask=image_roate)  # 把透明通道粘贴上
-    #         # paste_x2 = paste_x + new_w
-    #         # paste_y2 = paste_y + new_h
-    #         paste_x2 = paste_x + new_len
-    #         paste_y2 = paste_y + new_len
-    #         img_bg.save(f"{save_path}/{count}.png")
-    #         f.write(f"{count}_bg.png {1} {paste_x} {paste_y} {paste_x2} {paste_y2}\n")
-    #         f.flush()
-    #         count += 1
-    #         # 1 101 54 155 125
-    #         # draw = ImageDraw.Draw(img_bg)
-    #         # draw.rectangle((0, 0, 128, 128), fill=None, outline="red", width=2)  # 画框检验
-    #         # img_bg.show()
 
 
 if __name__ == '__main__':

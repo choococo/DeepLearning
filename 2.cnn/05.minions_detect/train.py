@@ -10,16 +10,7 @@ from torchsummary import summary
 import torchvision
 from sklearn.metrics import r2_score
 
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-
-def _loss_func_total(self, output, target, alpha=1):
-    # output [conf, x1, y1, x2, y2] target [conf, x1, y1, x2, y2]
-    # loss_conf =  loss_func(output[:, 0:1], target[:, 0:1])
-    loss_box = nn.MSELoss()(output[:, 1:], target[:, 1:])
-    # loss_total = alpha * loss_conf + (1 - alpha) * loss_box
-    loss_total = loss_box
-    return loss_total
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # 设备
 
 
 if __name__ == '__main__':
@@ -29,24 +20,23 @@ if __name__ == '__main__':
     root = r"F:\2.Dataset\Yellow\Minions"
     index = 0  # 权重索引，第一次训练为零
 
-    summaryWriter = SummaryWriter("./logs2")
+    summaryWriter = SummaryWriter("./logs2") # 收集者
 
     train_dataset = MyDataset(root, flag=0)
     val_dataset = MyDataset(root, flag=1)
-    test_dataset = MyDataset(root, flag=2)
 
     train_loader = DataLoader(train_dataset, BATCH_SIZE, shuffle=True)
     val_loader = DataLoader(val_dataset, BATCH_SIZE, shuffle=True)
-    # test_loader = DataLoader(test_dataset, BATCH_SIZE, shuffle=True)
 
     net = Net().to(DEVICE)
-    loss_func1 = nn.BCELoss()
-    loss_func2 = nn.MSELoss()
-    optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
 
-    last_acc = 0
+    loss_func1 = nn.BCELoss() # 置信度的损失
+    loss_func2 = nn.MSELoss() # 回归坐标的损失
+    optimizer = torch.optim.Adam(net.parameters(), lr=1e-3) # 优化器
+
+    last_acc = 0 #
     save_params = f"params/{index}.t"
-    if not os.path.exists("params"):
+    if not os.path.exists("params"): # 创建文件夹
         os.mkdir("params")
     if os.path.exists(f"params/{index}.t"):
         net.load_state_dict(torch.load(f"params/{index}.t"))
@@ -61,6 +51,7 @@ if __name__ == '__main__':
     train_r2_list = []  # r2
     val_r2_list = []
 
+    '过拟合自动停止程序的三个变量'
     r2_max = 0  # 过拟合自动停止参数 r2最大值
     average_num = 5  # 多少轮算一次平均
     count = 0  # 初始化值
@@ -151,13 +142,14 @@ if __name__ == '__main__':
         summaryWriter.add_scalars("acc", {"train_score": train_avg_score, "val_score": val_avg_score}, epoch)
         summaryWriter.add_scalars("R2", {"train_r2_score": train_r2_score, "val_r2_score": val_r2_score},epoch)
 
+        '保存参数：'
         if val_r2_s > r2_max:
             r2_max = val_r2_s
             torch.save(net.state_dict(), f"params/{epoch + index + 1}.t")
             print("params save success.")
         print("====>", val_r2_s)
 
-        # 加入过拟合自动判断，让程序过拟合自动停止
+        '加入过拟合自动判断，让程序过拟合自动停止'
         r2_length = len(val_r2_list)
         if (len(val_r2_list) - count) % 10 == 0:
             last_avg_acc = np.mean(val_r2_list[count:r2_length - average_num])

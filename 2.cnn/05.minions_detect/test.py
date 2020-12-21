@@ -28,6 +28,13 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 def test(net, test_loader, BATCH_SIZE):
+    """
+    测试评估指标
+    :param net:
+    :param test_loader:
+    :param BATCH_SIZE:
+    :return:
+    """
     test_acc_list = []
     test_r2_list = []
     net.eval()
@@ -59,7 +66,7 @@ def test(net, test_loader, BATCH_SIZE):
 
 if __name__ == '__main__':
 
-    BATCH_SIZE = 15
+    BATCH_SIZE = 15 # 批次
     EPOCH = 5  # 需要训练的轮次
     root = r"F:\2.Dataset\Yellow\Minions"
     index = 0  # 权重索引，第一次训练为零
@@ -74,16 +81,15 @@ if __name__ == '__main__':
     val_loader = DataLoader(val_dataset, BATCH_SIZE, shuffle=True, num_workers=4)
     test_loader = DataLoader(test_dataset, BATCH_SIZE, shuffle=True)
 
-    net = Net().cuda()
+    net = Net().cuda() # 放到cuda上
 
-    net.load_state_dict(torch.load("./params/14.t"))
+    net.load_state_dict(torch.load("./params/14.t")) # 加载参数
     # test(net, test_loader, BATCH_SIZE)
 
-    net.eval()
+    net.eval() # 进入测试，在测试的时候一定要加上
     for i in range(len(test_dataset)):
         img, label = test_dataset[i]
-        # print(label)
-        # exit()
+
         x = img[None, ...].cuda()
         conf, box = net(x)
         box = box.reshape(-1)
@@ -93,12 +99,15 @@ if __name__ == '__main__':
         print(bbox)
         # print(*bbox)
         print(img.shape)
+        '第一种方法反算图片数据'
         # img2 = img.cpu().detach() * 0.5 + 0.5
         # img2 = transforms.ToPILImage()(img2)
         # img2.show()
         # exit()
+        '第二种方法反算图片数据'
         img = np.uint8((img.permute(1, 2, 0).numpy() * 0.5 + 0.5) * 255)
-        image = Image.fromarray(img).convert("RGB")
-        draw = ImageDraw.Draw(image)
-        draw.rectangle(bbox, fill=None, outline="red", width=2)
-        image.show()
+
+        image = Image.fromarray(img).convert("RGB") # 图片转换成RGB通道，一定要注意
+        draw = ImageDraw.Draw(image) # 将图片放到画板上
+        draw.rectangle(bbox, fill=None, outline="red", width=2) # 画框
+        image.show() # 显示图片
