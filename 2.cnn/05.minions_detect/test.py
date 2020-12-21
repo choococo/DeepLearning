@@ -54,33 +54,6 @@ def test(net, test_loader, BATCH_SIZE):
     test_acc_s = np.mean(test_acc_list)
     print("测试集R2分数====>", test_r2_s)
     print("测试集Acc分数====>", test_acc_s)
-    # net.eval()
-    # tes_loss_list = []
-    # tes_r2_list = []
-    # tes_acc_list = []
-    # for tes_data, tes_label in test_loader:
-    #     tes_data, tes_label = tes_data.to(DEVICE), tes_label.to(DEVICE)
-    #
-    #     tes_out_confidence, tes_out_location = net(tes_data)
-    #     tes_label_confidence,tes_label_location = tes_label[:, 0], tes_label[:, 1:]
-    #
-    #     tes_out_location = tes_out_location.detach().cpu().numpy()
-    #     tes_label_location = tes_label_location.detach().cpu().numpy()
-    #     tes_r2 = r2_score(tes_out_location, tes_label_location)
-    #     tes_r2_list.append(tes_r2)
-    #
-    #     tes_out_confidence[tes_out_confidence >= 0.5] = 1.0
-    #     tes_out_confidence[tes_out_confidence < 0.5] = 0.0
-    #     tes_acc = (torch.sum(torch.eq(tes_out_confidence, tes_label_confidence)) / BATCH_SIZE).item()
-    #     tes_acc_list.append(tes_acc)
-    #     print(tes_acc)
-    #
-    # # tes_loss_total.append(np.mean(tes_loss_list))
-    # # tes_r2_total.append(np.mean(tes_r2_list))
-    # # tes_acc_total.append(np.mean(tes_acc_list))
-    # print(f"tes_loss：{np.mean(tes_loss_list)}  |  "
-    #       f"tes_R2_score：{np.mean(tes_r2_list)} | "
-    #       f"tes_acc：{np.mean(tes_acc_list)}")
     exit()
 
 
