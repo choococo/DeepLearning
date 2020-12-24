@@ -27,7 +27,7 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 #         return conf, bbox
 
 
-def test(net, test_loader, BATCH_SIZE):
+def evaluaion(net, test_loader, BATCH_SIZE):
     """
     测试评估指标
     :param net:
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     net = Net().cuda() # 放到cuda上
 
     net.load_state_dict(torch.load("./params/14.t")) # 加载参数
-    # test(net, test_loader, BATCH_SIZE)
+    # evaluaion(net, test_loader, BATCH_SIZE)
 
     net.eval() # 进入测试，在测试的时候一定要加上
     for i in range(len(test_dataset)):
@@ -110,4 +110,7 @@ if __name__ == '__main__':
         image = Image.fromarray(img).convert("RGB") # 图片转换成RGB通道，一定要注意
         draw = ImageDraw.Draw(image) # 将图片放到画板上
         draw.rectangle(bbox, fill=None, outline="red", width=2) # 画框
-        image.show() # 显示图片
+        plt.imshow(img)
+        plt.pause(0.1)
+        plt.show()
+        # image.show() # 显示图片
