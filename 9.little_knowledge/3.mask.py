@@ -44,7 +44,7 @@ def mask_use1():
     print(part_box)
 
 
-'NB的使用2:np.nonzero()'
+'NB的使用2:np.nonzero()与np.where()的用法差不多'
 
 
 def mask_use2():
@@ -58,11 +58,15 @@ def mask_use2():
     offset = offset[0]
     print(offset.shape)
     # 拿到有物体格子的索引
-    idx = np.nonzero(conf > 0.7)
+    # idx = np.nonzero(conf > 0.7)  # np.nonzero() 返回的一个元组，行和列
+    idx = np.where(conf > 0.7)  # np.nonzero() 返回的一个元组，行和列
     print(idx)
     """
     (   array([0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 4, 4], dtype=int64), # 这个代表行索引
         array([0, 2, 3, 4, 0, 5, 0, 4, 4, 0, 4, 5], dtype=int64)  # 这个代表列索引  )
+        
+    (   array([0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 4, 4], dtype=int64), 
+        array([0, 2, 3, 4, 0, 5, 0, 4, 4, 0, 4, 5], dtype=int64))
     """
     # 将行索引和列索引组合在一起：（1）先把最外边的元组拆开 （2）再使用zip进行组合
     idx = np.array([[idx, idy] for idx, idy in zip(*idx)])
@@ -73,14 +77,14 @@ def mask_use2():
     print(offset_box.shape)
 
 
-'NB的使用：torch.nonzero()'
+'NB的使用：torch.nonzero():将行和列索引组装在一起'
 
 
 def mask_user3():
     seed = torch.random.manual_seed(0)
     output = torch.randn(2, 5, 6, 6)
     conf, offset = output[:, 0], output[:, 1:]
-    print(conf.shape, offset.shape) # torch.Size([2, 6, 6]) torch.Size([2, 4, 6, 6])
+    print(conf.shape, offset.shape)  # torch.Size([2, 6, 6]) torch.Size([2, 4, 6, 6])
     idx = torch.nonzero(conf > 0.7)
     print(idx.shape)  # torch中是组合好了的，不需要自己组合
     offset_box = offset[:, idx[:, 0], idx[:, 1], idx[:, 2]]
@@ -89,5 +93,5 @@ def mask_user3():
 
 if __name__ == '__main__':
     # mask_use1()
-    # mask_use2()
-    mask_user3()
+    mask_use2()
+    # mask_user3()
