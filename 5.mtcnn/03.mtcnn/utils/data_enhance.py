@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
     （4）加入高斯模糊
     （5）随机两个或三个或四个
 """
-img = Image.open(r"image/000120.jpg")
+# img = Image.open(r"image/000120.jpg")
 
 
 def enh_brightness_dark(img):

@@ -14,9 +14,10 @@ img_transform = transforms.Compose([
 
 class MyDataset(Dataset):
 
-    def __init__(self, root):
+    def __init__(self, root, is_landmark=False):
         self.dataset = []
         self.root = root
+        self.is_landmark = is_landmark
         self.dataset.extend(open(os.path.join(root, "positive.txt")).readlines())
         self.dataset.extend(open(os.path.join(root, "negative.txt")).readlines())
         self.dataset.extend(open(os.path.join(root, "part.txt")).readlines())
@@ -25,7 +26,11 @@ class MyDataset(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, index):
-        img_filename, cls, off_x1, off_y1, off_x2, off_y2 = self.dataset[index].strip().split()
+        if self.is_landmark is False:
+            img_filename, cls, off_x1, off_y1, off_x2, off_y2 = self.dataset[index].strip().split()[:6]
+        else:
+            img_filename, cls, off_x1, off_y1, off_x2, off_y2, off_px1, off_py1, off_px2, off_py2, off_px3, off_py3, off_px4, off_py4, off_px5, off_py5 = \
+            self.dataset[index].strip().split()
         img_path = os.path.join(self.root, img_filename)
         cls = torch.tensor([int(cls)], dtype=torch.float32)
         offset = torch.tensor([float(off_x1), float(off_y1), float(off_x2), float(off_y2)], dtype=torch.float32)

@@ -19,12 +19,14 @@ import numpy as np
 
 class Trainer:
     # dataset_path=F:\2.Dataset\mtcnn_dataset\testing\test01/{train/val}/{face_size}
-    def __init__(self, net, save_params, sub_dir, face_size):
+    def __init__(self, net, save_params, sub_dir, index, face_size, is_landmark=False):
         self.net = net
         self.save_params = save_params
         self.choice = {0: "train", 1: "val"}
         self.dataset_path = sub_dir
+        self.index = index
         self.face_size = face_size
+        self.is_landmark = is_landmark
 
         if torch.cuda.is_available():
             self.device = torch.device("cuda")
@@ -46,16 +48,14 @@ class Trainer:
 
     def train(self, alpha):
         print(self.dataset_path)
-        BATCH_SIZE = 512
-        EPOCH = 50
-        index = 0
-        summaryWriter = SummaryWriter("./logs")
+        batch_size = 512
+        summarywriter = SummaryWriter(f"./logs{self.face_size}")
 
-        train_dataset = MyDataset(f"{self.dataset_path}/{self.choice[0]}/{self.face_size}")
-        train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+        train_dataset = MyDataset(f"{self.dataset_path}/{self.choice[0]}/{self.face_size}", self.is_landmark)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-        val_dataset = MyDataset(f"{self.dataset_path}/{self.choice[1]}/{self.face_size}")
-        val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
+        val_dataset = MyDataset(f"{self.dataset_path}/{self.choice[1]}/{self.face_size}", self.is_landmark)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 
         print(len(train_dataset))
         train_loss_list = []
@@ -69,8 +69,9 @@ class Trainer:
         r2_max = 0
         average_num = 5
         start = 0
-
-        for epoch in range(EPOCH):
+        epoch = 0
+        # for epoch in range(EPOCH):
+        while True:
             train_loss_list_inter = []
             train_acc_list_inter = []
             train_r2_list_inter = []
@@ -124,7 +125,7 @@ class Trainer:
             train_r2_list.append(np.mean(train_r2_list_inter))
 
             print(
-                f"{epoch + index + 1} | train_acc：{np.mean(train_acc_list_inter)} | train_loss: {np.mean(train_loss_list_inter)} | r2_score: {np.mean(train_r2_list_inter)}")
+                f"{epoch + self.index + 1} | train_acc：{np.mean(train_acc_list_inter)} | train_loss: {np.mean(train_loss_list_inter)} | r2_score: {np.mean(train_r2_list_inter)}")
 
             val_acc_list_inter = []
             val_loss_list_inter = []
@@ -169,12 +170,12 @@ class Trainer:
                 r2 = r2_score(offset.cpu().detach(), out_offset.cpu().detach())  # 计算r2分数
 
                 val_acc_list_inter.append(acc)
-                val_loss_list_inter.append(loss.item())
+                val_loss_list_inter.append(loss)
                 val_r2_list_inter.append(r2)
 
-            val_acc_list.append(np.mean(train_acc_list_inter))
-            val_loss_list.append(np.mean(train_loss_list_inter))
-            val_r2_list.append(np.mean(train_r2_list_inter))
+            val_acc_list.append(np.mean(val_acc_list_inter))
+            val_loss_list.append(np.mean(val_loss_list_inter))
+            val_r2_list.append(np.mean(val_r2_list_inter))
 
             val_r2_s = np.mean(val_r2_list_inter)
 
@@ -182,7 +183,8 @@ class Trainer:
             val_loss_list.append(np.mean(val_loss_list_inter))
             val_r2_list.append(np.mean(val_r2_list_inter))
             print(
-                f"{epoch + index + 1} | val_acc  ：{np.mean(val_acc_list_inter)} | val_loss  : {np.mean(val_loss_list_inter)} | r2_score : {np.mean(val_r2_list_inter)}")
+                f"{epoch + self.index + 1} | val_acc  ：{np.mean(val_acc_list_inter)} "
+                f"| val_loss  : {np.mean(val_loss_list_inter)} | r2_score : {np.mean(val_r2_list_inter)}")
             train_avg_loss = train_loss_list[epoch]
             val_avg_loss = val_loss_list[epoch]
             train_avg_score = train_acc_list[epoch]
@@ -190,13 +192,19 @@ class Trainer:
             train_r2_score = train_r2_list[epoch]
             val_r2_score = val_r2_list[epoch]
 
-            summaryWriter.add_scalars("loss", {"train_loss": train_avg_loss, "val_loss": val_avg_loss}, epoch)
-            summaryWriter.add_scalars("acc", {"train_score": train_avg_score, "val_score": val_avg_score}, epoch)
-            summaryWriter.add_scalars("R2", {"train_r2_score": train_r2_score, "val_r2_score": val_r2_score}, epoch)
+            summarywriter.add_scalars("loss", {"train_loss": train_avg_loss, "val_loss": val_avg_loss}, epoch)
+            summarywriter.add_scalars("acc", {"train_score": train_avg_score, "val_score": val_avg_score}, epoch)
+            summarywriter.add_scalars("R2", {"train_r2_score": train_r2_score, "val_r2_score": val_r2_score}, epoch)
 
             if val_r2_s > r2_max:
                 r2_max = val_r2_s
-                torch.save(self.net.state_dict(), f"params_p/p_net_{epoch + index + 1}.pth")
+                # ./params_p/p_net_{index}.pth
+                if self.face_size == 12:
+                    torch.save(self.net.state_dict(), f"params_p/p_net_{epoch + self.index + 1}.pth")
+                elif self.face_size == 24:
+                    torch.save(self.net.state_dict(), f"params_r/r_net_{epoch + self.index + 1}.pth")
+                else:
+                    torch.save(self.net.state_dict(), f"params_o/o_net_{epoch + self.index + 1}.pth")
                 print("params save success.")
             print("====>", val_r2_s)
 
@@ -209,8 +217,8 @@ class Trainer:
                     print(max(val_r2_list))
                     exit()
                 start += average_num
-
-        summaryWriter.close()
+            epoch += 1
+            summarywriter.close()
 
 
 if __name__ == '__main__':

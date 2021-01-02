@@ -193,7 +193,7 @@ def generator_sample(split_data, landmark_data, image_path, saving_path, face_si
                 face_resize.save(f"{positive_image_dir}/{positive_count}.jpg")
                 label_scale_num['positive'] -= 1
                 positive_count += 1
-            elif 0.3 < iou_p < 0.65 and label_scale_num['part']:
+            elif 0.3 < iou_p < 0.65 and label_scale_num['part'] > 0:
                 # draw.rectangle((x1_, y1_, x2_, y2_), outline="blue", width=3)
                 face_crop = img.crop(crop_box)
                 face_resize = face_crop.resize((face_size, face_size))
@@ -240,15 +240,16 @@ def generator_sample(split_data, landmark_data, image_path, saving_path, face_si
 
 if __name__ == '__main__':
     choices = {0: "train", 1: "val", 2: "test"}
-    label_position = r"label/list_bbox_celeba.txt"
-    label_landmark_path = r"label/list_landmarks_celeba.txt"
-    img_path = r"F:\2.Dataset\img_celeba"
-    num = 200000
+    label_position = r"E:\PycharmProjects\4. deeplearning\5.mtcnn\03.mtcnn\label\list_bbox_celeba.txt"
+    label_landmark_path = r"E:\PycharmProjects\4. deeplearning\5.mtcnn\03.mtcnn\label\list_landmarks_align_celeba.txt"
+    img_path = r"E:\Dataset\CelebA\img\img_celeba"
+    num = 1000
     scale_num = {"train": 0.7, "val": 0.15, "test": 0.15}
-    # position_label = get_sample(label_position)[:num]  # 读标签
-    # landmark_label = get_landmark(label_landmark_path)[:num]  # 读标签
-    position_label = get_sample(label_position)  # 读标签
-    landmark_label = get_landmark(label_landmark_path)  # 读标签
+    position_label = get_sample(label_position)[:num]  # 读标签
+    print(position_label)
+    landmark_label = get_landmark(label_landmark_path)[:num]  # 读标签
+    # position_label = get_sample(label_position)  # 读标签
+    # landmark_label = get_landmark(label_landmark_path)  # 读标签
     print(landmark_label)
 
     # position_label = np.array(get_picture())[:130]  # 读标签
@@ -270,7 +271,7 @@ if __name__ == '__main__':
     pool = multiprocessing.Pool(40)
     for index, split in enumerate(position_label_split):
         # save_path = fr"F:\2.Dataset\mtcnn_dataset\testing\test03\{choices[index]}"
-        save_path = fr"F:\2.Dataset\mtcnn_dataset\dataset\{choices[index]}"
+        save_path = fr"E:\Dataset\mtcnn_dataset\test01\{choices[index]}"
         print(save_path)
         landmark = landmark_label_split[index]
         # print(landmark)
