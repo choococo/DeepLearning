@@ -47,8 +47,8 @@ def get_sample(label_path):
     return pd.read_table(label_path, header=1, delim_whitespace=True)
 
 
-# def get_landmark(landmark_path):
-#     return pd.read_table(landmark_path, header=1, delim_whitespace=True)
+def get_landmark(landmark_path):
+    return pd.read_table(landmark_path, header=1, delim_whitespace=True)
 
 
 def generator_sample(split_data, landmark_data, image_path, saving_path, face_size):

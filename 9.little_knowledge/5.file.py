@@ -38,6 +38,7 @@ with open(origin_path, "r") as f1, open(append_path, "r") as f2:  # 同时打开
 [['image_name', 'x1', 'y1', 'x2', 'y2'], ['0.jpg', '123', '435', '74', '23'], 
 ['1.jpg', '123', '435', '74', '23'], ['2.jpg', '123', '435', '74', '23'], ['3.jpg', '123', '435', '74', '23'], 
 ['4.jpg', '123', '435', '74', '23'], ['5.jpg', '123', '435', '74', '23'], ['6.jpg', '123', '435', '74', '23']]
+
 [['lefteye_x', 'lefteye_y', 'righteye_x', 'righteye_y', 'nose_x', 'nose_y', 'leftmouth_x', 'leftmouth_y', 
 'rightmouth_x', 'rightmouth_y'], ['123', '124', '345', '64', '34', '74', '23', '89', '63', '23'], 
 ['123', '124', '345', '64', '34', '74', '23', '89', '63', '23'], 
@@ -46,6 +47,8 @@ with open(origin_path, "r") as f1, open(append_path, "r") as f2:  # 同时打开
  ['123', '124', '345', '64', '34', '74', '23', '89', '63', '23'], 
  ['123', '124', '345', '64', '34', '74', '23', '89', '63', '23'], 
  ['123', '124', '345', '64', '34', '74', '23', '89', '63', '23']]
+ 
+ 
 [['image_name' 'x1' 'y1' 'x2' 'y2' 'lefteye_x' 'lefteye_y' 'righteye_x'
   'righteye_y' 'nose_x' 'nose_y' 'leftmouth_x' 'leftmouth_y'
   'rightmouth_x' 'rightmouth_y']
